@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import HelloWorld from './components/Login.vue'
+import Login from './pages/Login.vue';
+
+
 </script>
 
 <template>
+    <Login/>
 </template>
 
