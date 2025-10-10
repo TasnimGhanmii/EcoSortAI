@@ -8,14 +8,16 @@ const toggleForm = (login: boolean) => (isLogin.value = login)
 
 <template>
   <div class="bg-[#F2F8F5] flex flex-col min-h-screen items-center justify-center">
-    <div class="flex gap-2 my-6">
-      <IconMdiRecycle class="text-green-500 w-10 h-auto" />
-      <p class="text-center font-bold text-[#082111] text-4xl">EcoSort AI</p>
+    <div class="flex items-center  gap-2 my-6">
+      <IconMdiRecycle class="text-green-500 sm:w-10 sm:h-auto" />
+      <p class="text-center font-bold text-[#082111] text-xl sm:text-4xl">EcoSort AI</p>
     </div>
 
-    <form class="flex flex-col bg-[#FEFFFF] w-md p-10 rounded-xl border border-[#a5b2a7] pb-5 transition-all duration-300 ease-in-out overflow-hidden">
+    <form class="flex flex-col bg-[#FEFFFF] w-full xs:w-64 sm:w-md md:w-lg p-4 xs:p-5 sm:p-10 rounded-xl border border-[#a5b2a7] pb-5 transition-all duration-300 ease-in-out overflow-hidden">
 
-      <div class="flex justify-between bg-[#E7EFE8] p-3 mb-10 rounded-lg transition-colors duration-300 ease-in-out">
+      <div class="flex flex-col gap-3 sm:flex-row sm:justify-between bg-[#E7EFE8] p-3 mb-10 rounded-lg transition-all duration-300 ease-in-out">
+        <!--used :class for dynamic change in the styling
+            used an array so we can combine multiple classes(static & dynamic) & we can seperate them usin , instead of having one string block-->
         <button
           type="button"
           @click="toggleForm(true)"
@@ -31,12 +33,13 @@ const toggleForm = (login: boolean) => (isLogin.value = login)
           Register
         </button>
       </div>
-
+      <!--used to ensure smooth animation when the field appears & disappears
+          <transition> listens to the appearance or disappearance of a child element -->
       <transition
-        enter-active-class="transition-all duration-300 ease-in-out"
+        enter-active-class="transition-all duration-700 ease-in-out"
         enter-from-class="opacity-0 -translate-y-2 max-h-0"
         enter-to-class="opacity-100 translate-y-0 max-h-40"
-        leave-active-class="transition-all duration-300 ease-in-out"
+        leave-active-class="transition-all duration-700 ease-in-out"
         leave-from-class="opacity-100 translate-y-0 max-h-40"
         leave-to-class="opacity-0 -translate-y-2 max-h-0"
       >
