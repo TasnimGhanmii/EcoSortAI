@@ -11,6 +11,7 @@ declare module 'vue' {
     AnimatedRing: typeof import('./src/components/AnimatedRing.vue')['default']
     BreakdownDashboard: typeof import('./src/components/BreakdownDashboard.vue')['default']
     CategoryCard: typeof import('./src/components/CategoryCard.vue')['default']
+    IconMdiLeaf: typeof import('~icons/mdi/leaf')['default']
     IconMdiRecycle: typeof import('~icons/mdi/recycle')['default']
     ImpactCard: typeof import('./src/components/ImpactCard.vue')['default']
     ItemCard: typeof import('./src/components/ItemCard.vue')['default']
