@@ -13,7 +13,7 @@ const toggleForm = (login: boolean) => (isLogin.value = login)
       <p class="text-center font-bold text-[#082111] text-4xl">EcoSort AI</p>
     </div>
 
-    <form class="flex flex-col bg-[#FEFFFF] w-md p-10 rounded-xl border border-[#a5b2a7] pb-5 transition-all duration-300 ease-in-out">
+    <form class="flex flex-col bg-[#FEFFFF] w-md p-10 rounded-xl border border-[#a5b2a7] pb-5 transition-all duration-300 ease-in-out overflow-hidden">
 
       <div class="flex justify-between bg-[#E7EFE8] p-3 mb-10 rounded-lg transition-colors duration-300 ease-in-out">
         <button
@@ -34,13 +34,13 @@ const toggleForm = (login: boolean) => (isLogin.value = login)
 
       <transition
         enter-active-class="transition-all duration-300 ease-in-out"
-        enter-from-class="opacity-0 -translate-y-2"
-        enter-to-class="opacity-100 translate-y-0"
+        enter-from-class="opacity-0 -translate-y-2 max-h-0"
+        enter-to-class="opacity-100 translate-y-0 max-h-40"
         leave-active-class="transition-all duration-300 ease-in-out"
-        leave-from-class="opacity-100 translate-y-0"
-        leave-to-class="opacity-0 -translate-y-2"
+        leave-from-class="opacity-100 translate-y-0 max-h-40"
+        leave-to-class="opacity-0 -translate-y-2 max-h-0"
       >
-        <div v-if="!isLogin" class="mb-6">
+        <div v-if="!isLogin" class="mb-6 overflow-hidden">
           <label class="font-semibold mb-2 block" for="fullname">Full Name</label>
           <input
             class="p-2 border border-[#a5b2a7] rounded-lg w-full"
