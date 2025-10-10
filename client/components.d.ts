@@ -13,6 +13,7 @@ declare module 'vue' {
     CategoryCard: typeof import('./src/components/CategoryCard.vue')['default']
     IconMdiLeaf: typeof import('~icons/mdi/leaf')['default']
     IconMdiRecycle: typeof import('~icons/mdi/recycle')['default']
+    IconMdiUpload: typeof import('~icons/mdi/upload')['default']
     ImpactCard: typeof import('./src/components/ImpactCard.vue')['default']
     ItemCard: typeof import('./src/components/ItemCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
