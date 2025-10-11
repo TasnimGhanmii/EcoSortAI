@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ImpactCard from '../components/ImpactCard.vue';
+
 
 </script>
 
@@ -28,7 +30,21 @@
          <button class="text-white font-medium cursor-pointer rounded-lg bg-gradient-to-r from-[#25C55E] to-[#63E392] p-2 px-6 my-6 active:scale-95 transition-all duration-300 ease-in-out">Select Image</button>
          <p class="text-xs text-gray-400">Supports JPG, PNG, WEBP up to 10MB</p>
       
-        </div>
+      </div>
+
+      <div class="flex flex-col mx-auto my-8 p-2  w-[60%]">
+          <div class="flex justify-between mb-10">
+               <div>
+                   <p class="font-bold text-4xl">Your Impact</p>
+                   <p class="text-sm text-gray-500">Track your waste sorting progress and environmental contribution</p>
+               </div>
+
+               <button class="bg-[#2AC864] cursor-pointer h-10 my-auto px-8 text-xs text-white font-medium rounded-2xl flex items-center gap-1 active:scale-95 transition duration-300 ease-in-out"><IconMdiFileExport/>Export Report</button>
+          </div>
+        
+          <div class="flex">
+          </div>
+      </div>
     </div>
     
         

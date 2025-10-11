@@ -6,5 +6,5 @@
 // biome-ignore lint: disable
 export {}
 declare global {
-
+  const IconMdiTrendingUp: typeof import('~icons/mdi/trending-up')['default']
 }
