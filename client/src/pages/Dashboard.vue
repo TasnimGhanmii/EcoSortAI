@@ -10,6 +10,7 @@ import IconMdiLeaf from '~icons/mdi/leaf';
 import IconMdiSproutOutline from '~icons/mdi/sproutOutline';        
 import IconMdiSetAll from '~icons/mdi/setAll';        
 import StatisticRing from '../components/statisticRing.vue';
+import CategoryCard from '../components/CategoryCard.vue';
 
 
 </script>
@@ -69,6 +70,13 @@ import StatisticRing from '../components/statisticRing.vue';
               <StatisticRing :percentage="15" nb-items="1" title="Hazardous" color="red"/>
               <StatisticRing :percentage="5" nb-items="0" title="Landfill" color="gray"/>
             </div>
+         </div>
+
+         <div class="flex flex-col w-full mt-20 p-5">
+             <p class="font-bold text-3xl  mb-10">Waste Category Guide</p>
+             <CategoryCard :icon="IconMdiRecycle" title="Recycable Waste" description="Materials that can be processed & reused" 
+             :tips="['Rinse containers before recycling','Remove caps and lids from bottles','Keep paper and cardboard dry','Flatten boxes to save space']" 
+             :examples="['Plastic bottles','Glass jars','Aluminum cans','Cardboard boxes','Paper']"  bg-color="#3A83F6" />
          </div>
       </div>
     </div>

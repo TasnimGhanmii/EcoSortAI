@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CategoryCard: typeof import('./src/components/CategoryCard.vue')['default']
+    IconMdiArrowDownDropCircleOutline: typeof import('~icons/mdi/arrow-down-drop-circle-outline')['default']
     IconMdiFileExport: typeof import('~icons/mdi/file-export')['default']
     IconMdiLeaf: typeof import('~icons/mdi/leaf')['default']
     IconMdiRecycle: typeof import('~icons/mdi/recycle')['default']
