@@ -8,20 +8,15 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AnimatedRing: typeof import('./src/components/AnimatedRing.vue')['default']
-    BreakdownDashboard: typeof import('./src/components/BreakdownDashboard.vue')['default']
     CategoryCard: typeof import('./src/components/CategoryCard.vue')['default']
-    IconHeroiconsOutlineArrowUpTray: typeof import('~icons/heroicons-outline/arrow-up-tray')['default']
-    IconMdiArrowUp: typeof import('~icons/mdi/arrow-up')['default']
-    IconMdiExport: typeof import('~icons/mdi/export')['default']
     IconMdiFileExport: typeof import('~icons/mdi/file-export')['default']
     IconMdiLeaf: typeof import('~icons/mdi/leaf')['default']
     IconMdiRecycle: typeof import('~icons/mdi/recycle')['default']
-    IconMdiTrendingUp: typeof import('~icons/mdi/trending-up')['default']
     IconMdiUpload: typeof import('~icons/mdi/upload')['default']
     ImpactCard: typeof import('./src/components/ImpactCard.vue')['default']
     ItemCard: typeof import('./src/components/ItemCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    StatisticRing: typeof import('./src/components/StatisticRing.vue')['default']
   }
 }
