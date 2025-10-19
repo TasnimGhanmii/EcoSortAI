@@ -48,7 +48,7 @@ const onLeave = (el: Element, done: () => void) => {
   <div class="flex flex-col w-full">
     <div
       class="flex justify-between bg-[#FEFFFF] p-5 border border-[#d1ded5] rounded-xl transition-colors duration-300 hover:cursor-pointer hover:bg-emerald-100"
-      :class="toggle ? 'border-b-0 rounded-b-none' : 'border-b'"
+      :class="toggle ? 'border-b-0 rounded-b-none bg-emerald-100 ' : 'border-b'"
       @click="toggleSection"
     >
       <div class="flex gap-6">

@@ -9,9 +9,11 @@ import IconMdiRecycle from '~icons/mdi/recycleVariant';
 import IconMdiLeaf from '~icons/mdi/leaf';        
 import IconMdiSproutOutline from '~icons/mdi/sproutOutline';        
 import IconMdiSetAll from '~icons/mdi/setAll';        
-import StatisticRing from '../components/statisticRing.vue';
+import IconMdiBiohazard from '~icons/mdi/biohazard';        
+import IconMdiDeleteVariant from '~icons/mdi/deleteVariant';        
 import CategoryCard from '../components/CategoryCard.vue';
 
+const Categories=['All Categories','Recyclable','Compost','Hazardous','General']
 
 </script>
 
@@ -32,7 +34,7 @@ import CategoryCard from '../components/CategoryCard.vue';
         </div>
       </div>
 
-      <div class="flex flex-col  m-3 -mt-5 p-8 bg-white items-center w-[60%]  border border-[#D6E2DA] rounded-2xl mx-auto">
+      <div class="flex flex-col  m-3 -mt-5 p-8 bg-white items-center w-[70%]  border border-[#D6E2DA] rounded-2xl mx-auto">
          <div class="bg-[#C3F1D3] p-5 rounded-full">
           <!--virtual components generated at build time by VUE & Vite plugins-->
           <IconMdiUpload class="h-15 w-15 text-[#21C55C]"/>
@@ -44,7 +46,8 @@ import CategoryCard from '../components/CategoryCard.vue';
       
       </div>
 
-      <div class="flex flex-col mx-auto my-8 p-2  w-[60%]">
+      <div class="flex flex-col mx-auto my-8 p-2  w-[70%]">
+          
           <div class="flex justify-between mb-10">
                <div>
                    <p class="font-bold text-4xl">Your Impact</p>
@@ -68,18 +71,51 @@ import CategoryCard from '../components/CategoryCard.vue';
               <StatisticRing :percentage="50" nb-items="3" title="Recyclable" color="green"/>
               <StatisticRing :percentage="30" nb-items="2" title="Compostable" color="amber"/>
               <StatisticRing :percentage="15" nb-items="1" title="Hazardous" color="red"/>
-              <StatisticRing :percentage="5" nb-items="0" title="Landfill" color="gray"/>
+              <StatisticRing :percentage="5" nb-items="0" title="General" color="gray"/>
             </div>
          </div>
 
-         <div class="flex flex-col w-full mt-20 p-5">
+         <div class="flex flex-col w-full gap-3.5 mt-20 p-5">
              <p class="font-bold text-3xl  mb-10">Waste Category Guide</p>
+
              <CategoryCard :icon="IconMdiRecycle" title="Recycable Waste" description="Materials that can be processed & reused" 
              :tips="['Rinse containers before recycling','Remove caps and lids from bottles','Keep paper and cardboard dry','Flatten boxes to save space']" 
              :examples="['Plastic bottles','Glass jars','Aluminum cans','Cardboard boxes','Paper']"  bg-color="#3A83F6" />
+
+             <CategoryCard :icon="IconMdiLeaf" title="Composable Waste" description="Organic materials that decompose naturally" 
+             :tips="['Avoid meat and dairy in home compost','Cut larger items into smaller pieces','Balance green and brown materials','Keep compost moist but not soggy']" 
+             :examples="['Fruit peels','Vegetable scraps','Coffee grounds','Eggshells','Leaves']"  bg-color="#22C45E" />
+
+             <CategoryCard :icon="IconMdiBiohazard" title="Hazardous Waste" description="Materials that can be processed & reused" 
+             :tips="['Never mix with regular trash','Keep in original containers when possible','Take to designated collection sites','Check local regulations for disposal']" 
+             :examples="['Batteries','Paint','Electronics','Chemicals','Fluorescent bulbs']"  bg-color="#EE4444" />
+
+             <CategoryCard :icon="IconMdiDeleteVariant" title="General Waste" description="Non-recyclable, non-hazardous items" 
+             :tips="['Minimize general waste where possible','Consider reuse before disposal','Use designated waste bins','Bag waste securely to prevent spills']" 
+             :examples="['Plastic wrap','Styrofoam','Broken ceramics','Disposable diapers']"  bg-color="#6B7281" />
+         </div>
+
+         <div class="flex flex-col w-full gap-2.5 p-6">
+             <div class="flex gap-10">
+                 <input class="border w-full p-2 bg-[#FEFFFF] rounded-xl border-[#809786] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent 
+                 appearance-none" type="search" name="" id="" placeholder=" 🔍 Search Waste Item...">
+                 <select class="bg-[#FEFFFF] border rounded-xl border-[#809786] py-3 px-6 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent 
+                 appearance-none" name="" id="">
+                  <option value="" disabled selected>Select a category</option>
+                  <option v-for="category in Categories" :key="category" :value="category">
+                    {{ category }}
+                  </option>
+                 </select>
+             </div>
          </div>
       </div>
-    </div>
     
+      <footer>
+      <p class="text-sm text-gray-500 text-center">© 2025 EcoSort AI. Help protect our planet, one item at a time.</p>
+    </footer>
+    
+    </div>
+
+   
         
 </template>
