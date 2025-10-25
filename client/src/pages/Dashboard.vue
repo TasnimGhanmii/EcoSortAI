@@ -11,7 +11,9 @@ import IconMdiSproutOutline from '~icons/mdi/sproutOutline';
 import IconMdiSetAll from '~icons/mdi/setAll';        
 import IconMdiBiohazard from '~icons/mdi/biohazard';        
 import IconMdiDeleteVariant from '~icons/mdi/deleteVariant';        
+import IconMdiTrashCanOutline from '~icons/mdi/trashCanOutline';        
 import CategoryCard from '../components/CategoryCard.vue';
+import ItemCard from '../components/ItemCard.vue';
 
 const Categories=['All Categories','Recyclable','Compost','Hazardous','General']
 
@@ -106,6 +108,22 @@ const Categories=['All Categories','Recyclable','Compost','Hazardous','General']
                     {{ category }}
                   </option>
                  </select>
+             </div>
+             <div class="flex gap-3 items-center my-8">
+                    <IconMdiTrashCanOutline class="h-15 w-15 text-green-500"/>
+                    <p class="text-2xl font-bold">classification Results</p>
+                </div>
+             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-2">
+                 <ItemCard 
+                   :icon="IconMdiRecycle" 
+                   image="https://d2j02ha532z66v.cloudfront.net/wp-content/uploads/2024/09/image-2-scaled.jpeg" 
+                   category="Recycable" 
+                   title="trash" 
+                   accuracy="12" 
+                   date="25/10/2025" 
+                   time="18:03:22"
+                 />
+
              </div>
          </div>
       </div>
