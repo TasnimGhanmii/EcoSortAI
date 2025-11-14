@@ -1,3 +1,6 @@
+namespace sevrer.Api.DTOs;
+
+
 public class RegisterRequestDto
 {
     public string FullName { get; set; } = string.Empty;

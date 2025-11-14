@@ -1,3 +1,15 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using sevrer.Api.Models;     // ? MATCHES your User namespace
+using sevrer.Api.DTOs;        // ? MATCHES your DTOs namespace
+
+namespace server.Api.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
@@ -16,14 +28,11 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponseDto>> Register([FromBody] RegisterRequestDto dto)
     {
-        //if email already exists
         if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
             return BadRequest("Email already registered.");
 
-        //hash password
         var hashedPassword = _passwordHasher.HashPassword(null, dto.Password);
 
-        //create user
         var user = new User
         {
             Id = Guid.NewGuid(),
@@ -36,7 +45,6 @@ public class AuthController : ControllerBase
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        //gen JWT
         var token = GenerateJwtToken(user);
 
         return Ok(new AuthResponseDto
