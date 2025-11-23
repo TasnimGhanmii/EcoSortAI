@@ -5,8 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using sevrer.Api.Models;     // ? MATCHES your User namespace
-using sevrer.Api.DTOs;        // ? MATCHES your DTOs namespace
+using sevrer.Api.Models;     
+using sevrer.Api.DTOs;       
 
 namespace server.Api.Controllers;
 

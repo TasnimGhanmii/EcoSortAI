@@ -3,16 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
-using sevrer.Api.Models;         // ? ADD THIS: so 'User' is recognized
-using sevrer.Api;                // ? ADD THIS: for ApplicationDbContext
+using sevrer.Api.Models;         
+using sevrer.Api;         
 
 var builder = WebApplication.CreateBuilder(args);
 
-// === Database Configuration ===
+// === DB config ===
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// === JWT Configuration ===
+// === JWT config ===
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var jwtKey = jwtSettings["Key"];
 
