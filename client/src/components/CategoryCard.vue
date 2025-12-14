@@ -17,14 +17,11 @@ const toggleSection = () => {
   toggle.value = !toggle.value
 }
 
-// transition hooks for smooth height animation
 const onEnter = (el: Element, done: () => void) => {
   const target = el as HTMLElement
   target.style.height = '0px'
   target.style.opacity = '0'
-  // force reflow
   void target.offsetHeight
-  // animate to full height
   target.style.transition = 'height 0.3s ease, opacity 0.3s ease'
   target.style.height = target.scrollHeight + 'px'
   target.style.opacity = '1'
@@ -35,7 +32,6 @@ const onLeave = (el: Element, done: () => void) => {
   const target = el as HTMLElement
   target.style.height = target.scrollHeight + 'px'
   target.style.opacity = '1'
-  // force reflow
   void target.offsetHeight
   target.style.transition = 'height 0.3s ease, opacity 0.3s ease'
   target.style.height = '0px'

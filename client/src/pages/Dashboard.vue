@@ -14,8 +14,35 @@ import IconMdiDeleteVariant from '~icons/mdi/deleteVariant';
 import IconMdiTrashCanOutline from '~icons/mdi/trashCanOutline';        
 import CategoryCard from '../components/CategoryCard.vue';
 import ItemCard from '../components/ItemCard.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,computed } from 'vue';
 import type { ClassificationItem } from '../types/ClassificationItem';
+import jsPDF from 'jspdf';
+import router from '../router';
+
+const logout = () => {
+  localStorage.removeItem('token')
+  router.push('/auth')
+}
+
+const searchQuery = ref('');
+const selectedCategory = ref('All Categories');
+
+const filteredClassifications = computed(() => {
+  const query = searchQuery.value.toLowerCase().trim();
+  if (!query) return classifications.value.filter(item => 
+    selectedCategory.value === 'All Categories' || item.category === selectedCategory.value
+  );
+
+  const queryWords = query.split(/\s+/); 
+  return classifications.value.filter(item => {
+    const title = item.title.toLowerCase();
+    const matchesTitle = queryWords.every(word => title.includes(word));
+    const matchesCategory =
+      selectedCategory.value === 'All Categories' || item.category === selectedCategory.value;
+    return matchesTitle && matchesCategory;
+  });
+});
+
 
 const hasClassifications = ref(false);
 const classifications = ref<ClassificationItem[]>([]);
@@ -174,6 +201,99 @@ const handleFileUpload = async (event: any) => {
   }
 };
 
+const exportReportPDF = () => {
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'pt',
+    format: 'a4'
+  });
+
+  // Title
+  doc.setFontSize(22);
+  doc.setTextColor('#28C762');
+  doc.text('EcoSort AI - Waste Sorting Report', 40, 50);
+
+  // Date
+  const now = new Date();
+  doc.setFontSize(12);
+  doc.setTextColor('#555');
+  doc.text(`Generated on: ${now.toLocaleString()}`, 40, 75);
+
+  // Section: Overall Progress
+  doc.setFontSize(16);
+  doc.setTextColor('#000');
+  doc.text('Your Overall Progress', 40, 110);
+
+  // Draw some metrics as colored boxes
+  const metrics = [
+    { title: 'Total Items Sorted', value: progress.value.TotalItemsSorted, color: '#52DD84' },
+    { title: 'Recyclable Items', value: progress.value.RecyclableItems, color: '#3A82F6' },
+    { title: 'Compostable Items', value: progress.value.CompostableItems, color: '#F3DA5C' },
+    { title: 'Hazardous Items', value: progress.value.HazardousItems, color: '#EF4444' },
+    { title: 'General Items', value: progress.value.GeneralItems, color: '#6B7281' },
+    { title: 'Eco Score', value: progress.value.EcoScore + '%', color: '#BDB9D5' }
+  ];
+
+  let yPosition = 140;
+  const boxWidth = 200;
+  const boxHeight = 50;
+  let xPosition = 40;
+
+  metrics.forEach((m, index) => {
+    doc.setFillColor(m.color);
+    doc.roundedRect(xPosition, yPosition, boxWidth, boxHeight, 5, 5, 'F');
+
+    doc.setTextColor('#fff');
+    doc.setFontSize(12);
+    doc.text(`${m.title}: ${m.value}`, xPosition + 10, yPosition + 30);
+
+    xPosition += boxWidth + 20;
+
+    // Wrap to next row
+    if ((index + 1) % 2 === 0) {
+      xPosition = 40;
+      yPosition += boxHeight + 20;
+    }
+  });
+
+  // Section: Category Breakdown
+  yPosition += 40;
+  doc.setTextColor('#000');
+  doc.setFontSize(16);
+  doc.text('Category Breakdown (%)', 40, yPosition);
+
+  yPosition += 20;
+  const categoryPercentages = [
+    { title: 'Recyclable', value: progress.value.RecyclablePercentage, color: '#3A82F6' },
+    { title: 'Compostable', value: progress.value.CompostablePercentage, color: '#F59E0B' },
+    { title: 'Hazardous', value: progress.value.HazardousPercentage, color: '#EF4444' },
+    { title: 'General', value: progress.value.GeneralPercentage, color: '#6B7281' }
+  ];
+
+  let xCat = 40;
+  categoryPercentages.forEach(c => {
+    doc.setFillColor(c.color);
+    doc.rect(xCat, yPosition, 100, 20, 'F');
+
+    doc.setTextColor('#fff');
+    doc.setFontSize(12);
+    doc.text(`${c.title}: ${c.value}%`, xCat + 5, yPosition + 14);
+
+    xCat += 120;
+  });
+
+  // Footer
+  doc.setTextColor('#999');
+  doc.setFontSize(10);
+  doc.text('© 2025 EcoSort AI', 40, 780);
+
+  // Save PDF
+  doc.save('EcoSort_Report.pdf');
+};
+
+
+
+
 
 
 const Categories=['All Categories','Recyclable','Compost','Hazardous','General']
@@ -184,6 +304,12 @@ const Categories=['All Categories','Recyclable','Compost','Hazardous','General']
 <template>
     <div class="flex flex-col bg-[#F2F9F4]">
       <div class="bg-[#28C762] justify-items-center -my-6.5 p-5 pt-30 pb-20">
+        <button
+    @click="logout"
+    class="text-white font-medium bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition-all duration-300 ease-in-out"
+  >
+    Logout
+  </button>
         <div class="flex items-center  gap-2 my-6">
           <IconMdiRecycle class="text-white sm:w-10 sm:h-auto" />
           <p class="text-center font-bold text-white text-xl sm:text-4xl">EcoSort AI</p>
@@ -229,7 +355,7 @@ const Categories=['All Categories','Recyclable','Compost','Hazardous','General']
                    <p class="text-sm text-gray-500">Track your waste sorting progress and environmental contribution</p>
                </div>
 
-               <button class="bg-[#2AC864] cursor-pointer h-10 my-auto px-8 text-xs text-white font-medium rounded-2xl flex items-center gap-1 active:scale-95 transition duration-300 ease-in-out"><IconMdiFileExport/>Export Report</button>
+               <button @click="exportReportPDF" class="bg-[#2AC864] cursor-pointer h-10 my-auto px-8 text-xs text-white font-medium rounded-2xl flex items-center gap-1 active:scale-95 transition duration-300 ease-in-out"><IconMdiFileExport/>Export Report</button>
           </div>
         
           <div class=" flex flex-wrap md:flex-nowrap  gap-6">
@@ -311,14 +437,15 @@ const Categories=['All Categories','Recyclable','Compost','Hazardous','General']
          <div class="flex flex-col w-full gap-2.5 p-6">
              <div class="flex gap-10">
                  <input class="border w-full p-2 bg-[#FEFFFF] rounded-xl border-[#809786] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent 
-                 appearance-none" type="search" name="" id="" placeholder=" 🔍 Search Waste Item...">
-                 <select class="bg-[#FEFFFF] border rounded-xl border-[#809786] py-3 px-6 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent 
-                 appearance-none" name="" id="">
-                  <option value="" disabled selected>Select a category</option>
-                  <option v-for="category in Categories" :key="category" :value="category">
-                    {{ category }}
-                  </option>
-                 </select>
+                 appearance-none" type="search" name=""  v-model="searchQuery" id="" placeholder=" 🔍 Search Waste Item...">
+                 <select v-model="selectedCategory"
+  class="bg-[#FEFFFF] border rounded-xl border-[#809786] py-3 px-6 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+>
+  <option value="All Categories">All Categories</option>
+  <option v-for="category in Categories.slice(1)" :key="category" :value="category">
+    {{ category }}
+  </option>
+</select>
              </div>
              <div class="flex gap-3 items-center my-8">
                     <IconMdiTrashCanOutline class="h-15 w-15 text-green-500"/>
@@ -327,7 +454,7 @@ const Categories=['All Categories','Recyclable','Compost','Hazardous','General']
              <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-10 mt-2">
                  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-2">
   <ItemCard 
-    v-for="item in classifications"
+    v-for="item in filteredClassifications"
     :key="item.id"
     :icon="item.icon"
     :image="item.image"
