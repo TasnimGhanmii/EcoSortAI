@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-
+using sevrer.Api.Enums;
 namespace sevrer.Api.Models;
 
 public partial class ApplicationDbContext : DbContext
@@ -48,6 +48,9 @@ public partial class ApplicationDbContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+        modelBuilder.Entity<Classification>()
+        .Property(c => c.Category)
+        .HasConversion<string>();
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

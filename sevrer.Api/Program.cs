@@ -1,18 +1,22 @@
+//in this file I have the startups and configs of my asp.net core web api
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using sevrer.Api.Models;         
-using sevrer.Api;         
+using sevrer.Api;
+using sevrer.Api.ML;
 
+//  initializes the application builder with configuration, logging, and service registration capabilities.
 var builder = WebApplication.CreateBuilder(args);
 
-// === DB config ===
+//DB config
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// === JWT config ===
+//JWT config
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var jwtKey = jwtSettings["Key"];
 
@@ -25,8 +29,10 @@ if (string.IsNullOrEmpty(jwtKey))
 }
 
 builder.Services.AddAuthentication(options =>
-{
+{   
+    //used to choose with auth scheme used to auth incoming request
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    //used in case auth fails
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
@@ -44,7 +50,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// === CORS ===
+//CORS
 var allowedOrigins = builder.Configuration
     .GetSection("AllowedOrigins")
     .Get<string[]>() ?? new[] { "http://localhost:5173" };
@@ -60,11 +66,13 @@ builder.Services.AddCors(options =>
     });
 });
 
-// === Identity / Password Hashing ===
+//password hashing
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
-// === Controllers ===
+//controllers
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<WastePredictionService>();
 
 var app = builder.Build();
 
@@ -77,5 +85,6 @@ app.UseCors("VueFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseStaticFiles();
 
 app.Run();

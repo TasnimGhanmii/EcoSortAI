@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using sevrer.Api.Enums;
 namespace sevrer.Api.Models;
 
 public partial class Classification
@@ -9,7 +9,7 @@ public partial class Classification
 
     public Guid UserId { get; set; }
 
-    public string Category { get; set; } = null!;
+    public WasteCategory Category { get; set; }
 
     public string ImageUrl { get; set; } = null!;
 
@@ -18,4 +18,7 @@ public partial class Classification
     public DateTime? ClassifiedAt { get; set; }
 
     public virtual User User { get; set; } = null!;
+
+    public string FormattedDate => ClassifiedAt?.ToString("dd/MM/yyyy") ?? "";
+    public string FormattedTime => ClassifiedAt?.ToString("HH:mm:ss") ?? "";
 }

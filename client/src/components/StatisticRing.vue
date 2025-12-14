@@ -1,61 +1,58 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, watch, computed } from 'vue';
 
 const props = defineProps<{
-  percentage: number; 
-  nbItems: string;      
-  title: string;      
-  color?: string; 
+  percentage: number;
+  nbItems: string;
+  title: string;
+  color?: string;
 }>();
 
 const animatedPercentage = ref(0);
 
-onMounted(() => {
-  const target = Math.min(Math.max(props.percentage, 0), 100); // clamp 0–100
-  const duration = 1200;
-  const start = Date.now();
+// Animate whenever percentage changes
+watch(
+  () => props.percentage,
+  (newVal, oldVal) => {
+    const target = Math.min(Math.max(newVal, 0), 100);
+    const duration = 1200;
+    const start = performance.now();
+    const startValue = animatedPercentage.value;
 
-  const animate = () => {
-    const now = Date.now();
-    const elapsed = now - start;
-    const progress = Math.min(elapsed / duration, 1);
-    animatedPercentage.value = Math.floor(progress * target);
-    if (progress < 1) requestAnimationFrame(animate);
-  };
+    const animate = (time: number) => {
+      const elapsed = time - start;
+      const progress = Math.min(elapsed / duration, 1);
+      animatedPercentage.value = Math.floor(startValue + progress * (target - startValue));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
 
-  animate();
-});
+    requestAnimationFrame(animate);
+  },
+  { immediate: true }
+);
 
-const radius = 45; 
+const radius = 45;
 const circumference = 2 * Math.PI * radius;
 
 const strokeDashoffset = computed(() => {
   return circumference - (animatedPercentage.value / 100) * circumference;
 });
 
-// map color name to Tailwind-compatible stroke
 const strokeColor = computed(() => {
-  if (!props.color) return '#25C55E'; // default green
+  if (!props.color) return '#25C55E';
   const colors: Record<string, string> = {
     green: '#25C55E',
     blue: '#3B82F6',
     amber: '#F59E0B',
     red: '#EF4444',
   };
-  return colors[props.color] || props.color; // fallback to raw value
+  return colors[props.color] || props.color;
 });
 </script>
 
 <template>
   <div class="flex flex-col items-center">
-    <!-- SVG with text inside -->
-    <svg
-      width="120"
-      height="120"
-      viewBox="0 0 120 120"
-      class="relative"
-    >
-      <!-- background ring -->
+    <svg width="120" height="120" viewBox="0 0 120 120" class="relative">
       <circle
         cx="60"
         cy="60"
@@ -64,8 +61,6 @@ const strokeColor = computed(() => {
         stroke="#E5E7EB"
         stroke-width="8"
       />
-
-      <!-- progress ring (on top!) -->
       <circle
         cx="60"
         cy="60"
@@ -76,11 +71,8 @@ const strokeColor = computed(() => {
         stroke-linecap="round"
         :stroke-dasharray="circumference"
         :stroke-dashoffset="strokeDashoffset"
-        class="transition-all duration-1000 ease-out"
-        transform="rotate(-90 60 60)" 
+        transform="rotate(-90 60 60)"
       />
-
-      <!-- text inside the ring -->
       <text
         x="60"
         y="53"
@@ -101,8 +93,6 @@ const strokeColor = computed(() => {
         {{ nbItems }} items
       </text>
     </svg>
-
-    <!-- title below the whole card -->
     <p class="mt-4 text-sm font-medium text-gray-700">{{ title }}</p>
   </div>
 </template>

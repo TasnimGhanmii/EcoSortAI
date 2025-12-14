@@ -31,8 +31,13 @@ const handleSubmit = async () => {
       ? { email: email.value, password: password.value }
       : { fullName: fullName.value, email: email.value, password: password.value }
 
-    await api.post(endpoint, payload)
-    await router.push('/dashboard')
+    const response = await api.post(endpoint, payload)
+
+    localStorage.setItem('token', response.data.token)
+
+
+
+await router.push('/dashboard')
   } catch (err: any) {
     error.value = err.response?.data?.message || 'Authentication failed'
   } finally {

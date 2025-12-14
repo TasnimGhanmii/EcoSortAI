@@ -30,7 +30,17 @@ export default defineConfig({
     Icons({
       autoInstall: true, // Automatically install missing icon sets
     }),
+    
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5148', 
+        changeOrigin: true,
+        secure: false,
+      }
+    }
+  }
   
   
   

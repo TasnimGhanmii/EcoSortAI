@@ -17,7 +17,7 @@ defineProps<{
          :style="{ backgroundColor: bgColor }">
           <component :is="icon" class="w-10 h-10 text-white"/>
         </div>
-        <p class="font-bold">{{ number }}</p>
+        <p class="font-bold text-black">{{ number }}</p>
         <p class="text-sm text-gray-500">{{ title }}</p>
     </div>
 </template>
