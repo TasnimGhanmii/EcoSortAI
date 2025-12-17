@@ -12,9 +12,7 @@ namespace WasteTrainer
     {
         static void Main(string[] args)
         {
-            // ================================
-            // 1️⃣ Load dataset
-            // ================================
+            //loading dataset
             var datasetDir = @"C:\Users\tasnim\Desktop\dataset-resized";
             var classes = new[] { "cardboard", "glass", "metal", "paper", "plastic", "trash" };
 
@@ -40,23 +38,17 @@ namespace WasteTrainer
             foreach (var g in images.GroupBy(i => i.Label))
                 Console.WriteLine($"{g.Key}: {g.Count()}");
 
-            // ================================
-            // 2️⃣ ML Context
-            // ================================
+            //ml context
             var mlContext = new MLContext(seed: 1);
 
             var data = mlContext.Data.LoadFromEnumerable(images);
 
-            // ================================
-            // 3️⃣ Train / Test split
-            // ================================
+            //train/split
             var split = mlContext.Data.TrainTestSplit(data, testFraction: 0.2);
             var trainData = split.TrainSet;
             var testData = split.TestSet;
 
-            // ================================
-            // 4️⃣ Preprocessing pipeline
-            // ================================
+            //preprocessing pipeline
             var preprocessingPipeline =
                 mlContext.Transforms.LoadRawImageBytes(
                     outputColumnName: "ImageBytes",
@@ -66,16 +58,14 @@ namespace WasteTrainer
                     outputColumnName: "LabelKey",
                     inputColumnName: nameof(ImageData.Label)));
 
-            // FIT ONLY ON TRAIN DATA
+            //fit on training data
             var preprocessor = preprocessingPipeline.Fit(trainData);
 
-            // TRANSFORM BOTH
+            //transform
             var trainTransformed = preprocessor.Transform(trainData);
             var testTransformed = preprocessor.Transform(testData);
 
-            // ================================
-            // 5️⃣ Trainer
-            // ================================
+            //trainer
             var trainer = mlContext.MulticlassClassification.Trainers.ImageClassification(
                 new ImageClassificationTrainer.Options
                 {
@@ -90,22 +80,15 @@ namespace WasteTrainer
                     ReuseTrainSetBottleneckCachedValues = true
                 });
 
-            // ================================
-            // 6️⃣ Training pipeline
-            // ================================
-            // ❌ DO NOT append MapKeyToValue — keep output as LabelKey (uint)
+            //training pipeline
             var trainingPipeline = trainer;
 
-            // ================================
-            // 7️⃣ Train
-            // ================================
+            //train
             Console.WriteLine("🚀 Training started...");
             var model = trainingPipeline.Fit(trainTransformed);
             Console.WriteLine("✅ Training finished");
 
-            // ================================
-            // 8️⃣ Evaluate
-            // ================================
+            //evaluate
             var predictions = model.Transform(testTransformed);
 
             var metrics = mlContext.MulticlassClassification.Evaluate(
@@ -116,17 +99,13 @@ namespace WasteTrainer
             Console.WriteLine($"📊 MacroAccuracy: {metrics.MacroAccuracy:P2}");
             Console.WriteLine($"📊 MicroAccuracy: {metrics.MicroAccuracy:P2}");
 
-            // ================================
-            // 9️⃣ Save model
-            // ================================
+            //saving model
             mlContext.Model.Save(model, trainTransformed.Schema, "waste_classification_model.zip");
             Console.WriteLine("💾 Model saved successfully");
         }
     }
 
-    // ================================
-    // Image data model
-    // ================================
+    //image data
     public class ImageData
     {
         public string ImagePath { get; set; } = string.Empty;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace sevrer.Api.ML
 {
-    // Optional: For training only — define schema if loading labeled data
+    //for training only to define schema if loading labeled data
     public class WasteImageData
     {
         [LoadColumn(0)]
@@ -14,7 +14,7 @@ namespace sevrer.Api.ML
         public string Label { get; set; }
     }
 
-    // Optional: Training pipeline helper
+    //training pipeline helper
     public static class WasteModelTrainer
     {
         public static ITransformer TrainModel(MLContext mlContext, IDataView trainDataView)

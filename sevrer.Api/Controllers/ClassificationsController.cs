@@ -48,7 +48,7 @@ namespace sevrer.Api.Controllers
             {
                 id = c.Id,
                 icon = GetIconForCategory(c.Category),
-                image = $"{baseUrl}{c.ImageUrl}", // ? Absolute URL
+                image = $"{baseUrl}{c.ImageUrl}", 
                 category = c.Category.ToString(),
                 title = "Waste Item",
                 accuracy = (int)Math.Round((c.PredictedConfidence ?? 0f) * 100),
@@ -104,7 +104,7 @@ namespace sevrer.Api.Controllers
                 {
                     id = classification.Id,
                     icon = GetIconForCategory(category),
-                    image = $"{baseUrl}{classification.ImageUrl}", // ? Absolute URL
+                    image = $"{baseUrl}{classification.ImageUrl}", 
                     category = category.ToString(),
                     title = "Uploaded Item",
                     accuracy = (int)Math.Round(confidence * 100),
