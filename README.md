@@ -74,11 +74,12 @@ EcoSort AI solves this problem by making waste classification **simple, accurate
 ### Dashboard & Impact Tracking
 ![Dashboard](./screenshots/dashboard.png)
 
+### Waste Category Guide
+![Waste Category Guide](./screenshots/guide.png)
+
 ### Classification Results
 ![Classification Results](./screenshots/classification.png)
 
-### Waste Category Guide
-![Waste Category Guide](./screenshots/guide.png)
 
 ---
 
